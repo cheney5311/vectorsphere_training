@@ -1,0 +1,237 @@
+# 日志配置文件
+# 优先级：此文件 > backend/config/config.py > 环境变量
+
+logging:
+  # 全局配置
+  version: 1
+  disable_existing_loggers: false
+  
+  # 格式化器
+  formatters:
+    standard:
+      format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+      datefmt: "%Y-%m-%d %H:%M:%S"
+      
+    detailed:
+      format: "%(asctime)s [%(levelname)s] %(name)s:%(lineno)d - %(funcName)s(): %(message)s"
+      datefmt: "%Y-%m-%d %H:%M:%S"
+      
+    json:
+      format: '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "message": "%(message)s", "module": "%(module)s", "function": "%(funcName)s", "line": %(lineno)d}'
+      datefmt: "%Y-%m-%dT%H:%M:%S"
+      
+    simple:
+      format: "%(levelname)s - %(message)s"
+      
+  # 处理器
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: INFO
+      formatter: standard
+      stream: ext://sys.stdout
+      
+    file_info:
+      class: logging.handlers.RotatingFileHandler
+      level: INFO
+      formatter: detailed
+      filename: "/var/log/vectorsphere/app.log"
+      maxBytes: 10485760  # 10MB
+      backupCount: 5
+      encoding: utf8
+      
+    file_error:
+      class: logging.handlers.RotatingFileHandler
+      level: ERROR
+      formatter: detailed
+      filename: "/var/log/vectorsphere/error.log"
+      maxBytes: 10485760  # 10MB
+      backupCount: 10
+      encoding: utf8
+      
+    file_debug:
+      class: logging.handlers.RotatingFileHandler
+      level: DEBUG
+      formatter: detailed
+      filename: "/var/log/vectorsphere/debug.log"
+      maxBytes: 52428800  # 50MB
+      backupCount: 3
+      encoding: utf8
+      
+    # 训练日志
+    training_file:
+      class: logging.handlers.RotatingFileHandler
+      level: INFO
+      formatter: json
+      filename: "/var/log/vectorsphere/training.log"
+      maxBytes: 104857600  # 100MB
+      backupCount: 10
+      encoding: utf8
+      
+    # 审计日志
+    audit_file:
+      class: logging.handlers.RotatingFileHandler
+      level: INFO
+      formatter: json
+      filename: "/var/log/vectorsphere/audit.log"
+      maxBytes: 52428800  # 50MB
+      backupCount: 20
+      encoding: utf8
+      
+    # 性能日志
+    performance_file:
+      class: logging.handlers.RotatingFileHandler
+      level: INFO
+      formatter: json
+      filename: "/var/log/vectorsphere/performance.log"
+      maxBytes: 52428800  # 50MB
+      backupCount: 5
+      encoding: utf8
+      
+    # 系统日志（可选）
+    syslog:
+      class: logging.handlers.SysLogHandler
+      level: WARNING
+      formatter: standard
+      address: ["/dev/log"]
+      facility: "local0"
+      
+  # 记录器配置
+  loggers:
+    # 根记录器
+    root:
+      level: INFO
+      handlers: [console, file_info, file_error]
+      
+    # 应用记录器
+    backend:
+      level: INFO
+      handlers: [console, file_info, file_error]
+      propagate: false
+      
+    # 训练模块
+    backend.training:
+      level: INFO
+      handlers: [training_file, console]
+      propagate: false
+      
+    # API模块（更新为模块化API）
+    backend.modules:
+      level: INFO
+      handlers: [console, file_info]
+      propagate: false
+      
+    # 认证模块
+    backend.middleware.auth:
+      level: INFO
+      handlers: [audit_file, console]
+      propagate: false
+      
+    # 监控模块
+    backend.monitoring:
+      level: INFO
+      handlers: [performance_file, console]
+      propagate: false
+      
+    # 分布式模块
+    backend.distributed:
+      level: INFO
+      handlers: [console, file_info]
+      propagate: false
+      
+    # 数据库
+    sqlalchemy:
+      level: WARNING
+      handlers: [file_info]
+      propagate: false
+      
+    # Redis
+    redis:
+      level: WARNING
+      handlers: [file_info]
+      propagate: false
+      
+    # Flask
+    flask:
+      level: INFO
+      handlers: [console, file_info]
+      propagate: false
+      
+    # Werkzeug
+    werkzeug:
+      level: WARNING
+      handlers: [file_info]
+      propagate: false
+      
+    # 第三方库
+    urllib3:
+      level: WARNING
+      handlers: [file_error]
+      propagate: false
+      
+    requests:
+      level: WARNING
+      handlers: [file_error]
+      propagate: false
+      
+  # 环境特定配置
+  environments:
+    development:
+      root_level: DEBUG
+      console_level: DEBUG
+      file_debug_enabled: true
+      
+    testing:
+      root_level: WARNING
+      console_level: WARNING
+      file_debug_enabled: false
+      
+    production:
+      root_level: INFO
+      console_level: WARNING
+      file_debug_enabled: false
+      syslog_enabled: true
+      
+  # 日志轮转配置
+  rotation:
+    # 按时间轮转
+    time_based:
+      enabled: false
+      when: "midnight"
+      interval: 1
+      backup_count: 30
+      
+    # 按大小轮转（已在handlers中配置）
+    size_based:
+      enabled: true
+      
+  # 日志清理
+  cleanup:
+    enabled: true
+    retention_days: 30
+    cleanup_schedule: "0 2 * * *"  # 每天凌晨2点清理
+    
+  # 远程日志（可选）
+  remote_logging:
+    enabled: false
+    
+    # ELK Stack
+    elasticsearch:
+      enabled: false
+      host: "localhost"
+      port: 9200
+      index_prefix: "vectorsphere-logs"
+      
+    # Fluentd
+    fluentd:
+      enabled: false
+      host: "localhost"
+      port: 24224
+      tag: "vectorsphere"
+      
+    # Sentry
+    sentry:
+      enabled: false
+      dsn: "https://your-sentry-dsn"
+      environment: "production"
+      release: "1.0.0"

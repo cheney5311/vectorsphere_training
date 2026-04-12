@@ -1,0 +1,7 @@
+{
+  "模块导入": true,
+  "配置管理器": true,
+  "本地模型服务": true,
+  "LangChain 推理服务": true,
+  "API 客户端": true
+}

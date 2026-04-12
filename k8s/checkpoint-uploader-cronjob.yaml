@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: checkpoint-uploader-cron
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: checkpoint-uploader
+              image: your-registry/vectorsphere/uploader:latest
+              env:
+                - name: CHECKPOINT_QUEUE_DIR
+                  value: "/data/checkpoint_queue"
+                - name: CHECKPOINT_UPLOADER_POLL_INTERVAL
+                  value: "60"
+              volumeMounts:
+                - name: queue-volume
+                  mountPath: /data/checkpoint_queue
+          restartPolicy: OnFailure
+          volumes:
+            - name: queue-volume
+              persistentVolumeClaim:
+                claimName: checkpoint-uploader-queue-pvc

@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "stages": {},
+  "final_model_path": "gpt2",
+  "total_stages": 0,
+  "completed_stages": 0,
+  "training_stats": {
+    "total_time": 2.384185791015625e-07,
+    "stages": {},
+    "errors": []
+  },
+  "total_duration": 2.384185791015625e-07
+}

@@ -1,0 +1,201 @@
+# VectorSphere智能平台主配置文件
+# 优先级：此文件 > backend/config/config.py > 环境变量
+# 版本：1.0.0
+
+# 应用基础信息
+app:
+  name: "VectorSphere Intelligent Platform"
+  version: "1.0.0"
+  description: "企业级AI训练和推理平台"
+  environment: "development"  # development, testing, production
+  debug: true
+  testing: false
+  
+# 服务配置
+service:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  timeout: 300
+  
+# 项目路径配置
+paths:
+  project_root: "/root/seetaSearch/VectorSphere-intelligent-platform"
+  data_root: "/data/vectorsphere"
+  logs_root: "/var/log/vectorsphere"
+  temp_root: "/tmp/vectorsphere"
+  
+  # 子目录
+  models: "${paths.data_root}/models"
+  datasets: "${paths.data_root}/datasets"
+  checkpoints: "${paths.data_root}/checkpoints"
+  uploads: "${paths.data_root}/uploads"
+  cache: "${paths.data_root}/cache"
+  
+# 密钥配置（生产环境应使用环境变量）
+secrets:
+  secret_key: "dev-secret-key-change-in-production"
+  jwt_secret: "dev-jwt-secret-change-in-production"
+  encryption_key: "dev-encryption-key-change-in-production"
+  
+# 功能开关
+features:
+  # 核心功能
+  training_enabled: true
+  inference_enabled: true
+  model_management: true
+  dataset_management: true
+  
+  # 高级功能
+  distributed_training: false
+  auto_scaling: false
+  model_versioning: true
+  experiment_tracking: true
+  
+  # 监控和分析
+  monitoring: true
+  metrics_collection: true
+  performance_profiling: false
+  
+  # 安全功能
+  authentication: true
+  authorization: true
+  audit_logging: true
+  rate_limiting: true
+  
+  # 集成功能
+  webhook_support: false
+  api_gateway: false
+  message_queue: true
+  
+# 资源限制
+resource_limits:
+  # 内存限制（MB）
+  max_memory_per_task: 8192
+  max_total_memory: 32768
+  
+  # CPU限制
+  max_cpu_cores_per_task: 4
+  max_total_cpu_cores: 16
+  
+  # GPU限制
+  max_gpu_per_task: 2
+  max_total_gpu: 8
+  
+  # 存储限制（GB）
+  max_storage_per_user: 100
+  max_total_storage: 1000
+  
+  # 并发限制
+  max_concurrent_tasks: 10
+  max_concurrent_users: 100
+  
+# 性能配置
+performance:
+  # 缓存配置
+  cache:
+    enabled: true
+    backend: "redis"
+    default_ttl: 3600
+    
+  # 连接池
+  connection_pools:
+    database:
+      min_size: 5
+      max_size: 20
+    redis:
+      min_size: 5
+      max_size: 50
+      
+  # 异步配置
+  async:
+    enabled: true
+    max_workers: 10
+    queue_size: 1000
+    
+# 多租户配置
+multi_tenant:
+  enabled: true
+  default_tenant: "default"
+  tenant_isolation: "database"  # database, schema, prefix
+
+# 租户平台集成配置
+tenant_platform:
+  enabled: true
+  url: "http://tenant-platform:8080"
+  api_token: ""
+  timeout: 30
+  retries: 3
+  
+# 备份配置
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # 每天凌晨2点
+  retention_days: 30
+  
+  # 备份类型
+  types:
+    database: true
+    files: true
+    configurations: true
+    
+  # 备份存储
+  storage:
+    type: "local"  # local, s3, gcs, azure
+    path: "/data/backups"
+    
+# 通知配置
+notifications:
+  enabled: true
+  
+  # 通知类型
+  types:
+    email: false
+    webhook: false
+    in_app: true
+    
+  # 通知事件
+  events:
+    training_completed: true
+    training_failed: true
+    system_alerts: true
+    resource_warnings: true
+    
+# 实验性功能
+experimental:
+  enabled: false
+  
+  features:
+    auto_hyperparameter_tuning: false
+    federated_learning: false
+    quantum_computing: false
+    edge_deployment: false
+    
+# 配置文件包含
+includes:
+  - "database.yaml"
+  - "redis.yaml"
+  - "training.yaml"
+  - "monitoring.yaml"
+  - "security.yaml"
+  - "api.yaml"
+  - "logging.yaml"
+  - "performance_api.yaml"  # 性能API配置
+  
+# 配置验证
+validation:
+  strict_mode: false
+  required_fields:
+    - "app.name"
+    - "app.version"
+    - "service.host"
+    - "service.port"
+    
+# 配置元数据
+metadata:
+  created_at: "2024-01-15T10:00:00Z"
+  created_by: "system"
+  last_modified: "2024-01-15T10:00:00Z"
+  modified_by: "system"
+  schema_version: "1.0"
+  checksum: ""

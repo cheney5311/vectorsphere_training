@@ -1,0 +1,156 @@
+# API配置文件
+# 优先级：此文件 > backend/config/config.py > 环境变量
+
+api:
+  # 基础配置
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  
+  # 请求配置
+  max_request_size: 104857600  # 100MB
+  request_timeout: 300         # 5分钟
+  max_content_length: 104857600
+  
+  # 响应配置
+  response:
+    default_format: "json"
+    compression: true
+    cache_control: "no-cache"
+    
+    # 分页配置
+    pagination:
+      default_page_size: 20
+      max_page_size: 100
+      
+  # 版本控制
+  versioning:
+    enabled: true
+    default_version: "v1"
+    supported_versions:
+      - "v1"
+      - "v2"
+    header_name: "API-Version"
+    
+  # 文档配置
+  documentation:
+    swagger:
+      enabled: true
+      url_prefix: "/docs"
+      title: "VectorSphere API"
+      version: "1.0.0"
+      description: "VectorSphere智能训练平台API文档"
+      
+    redoc:
+      enabled: true
+      url_prefix: "/redoc"
+      
+  # 中间件配置
+  middleware:
+    # 请求日志
+    request_logging:
+      enabled: true
+      log_body: false
+      log_headers: false
+      exclude_paths:
+        - "/health"
+        - "/metrics"
+        
+    # 响应时间
+    response_time:
+      enabled: true
+      header_name: "X-Response-Time"
+      
+    # 请求ID
+    request_id:
+      enabled: true
+      header_name: "X-Request-ID"
+      
+  # 错误处理
+  error_handling:
+    include_traceback: false
+    log_errors: true
+    
+    # 自定义错误页面
+    custom_error_pages:
+      404: "/templates/errors/404.html"
+      500: "/templates/errors/500.html"
+      
+  # 健康检查
+  health_check:
+    enabled: true
+    endpoint: "/health"
+    
+    # 检查项目
+    checks:
+      database: true
+      redis: true
+      disk_space: true
+      memory: true
+      
+  # 指标端点
+  metrics:
+    enabled: true
+    endpoint: "/metrics"
+    format: "prometheus"
+    
+  # WebSocket配置
+  websocket:
+    enabled: true
+    path: "/ws"
+    max_connections: 100
+    heartbeat_interval: 30
+    
+  # 静态文件服务
+  static_files:
+    enabled: true
+    path: "/static"
+    directory: "static"
+    cache_max_age: 3600
+    
+  # 上传配置
+  upload:
+    enabled: true
+    path: "/upload"
+    max_file_size: 104857600  # 100MB
+    allowed_types:
+      - "image/jpeg"
+      - "image/png"
+      - "text/plain"
+      - "application/json"
+      - "text/csv"
+      
+  # 下载配置
+  download:
+    enabled: true
+    path: "/download"
+    chunk_size: 8192
+    resume_support: true
+    
+  # 缓存配置
+  cache:
+    enabled: true
+    backend: "redis"  # redis, memory
+    default_ttl: 3600
+    
+    # 缓存策略
+    strategies:
+      models: 7200      # 模型列表缓存2小时
+      datasets: 3600    # 数据集列表缓存1小时
+      users: 1800       # 用户信息缓存30分钟
+      
+  # 异步任务
+  async_tasks:
+    enabled: true
+    queue_backend: "redis"
+    max_workers: 4
+    task_timeout: 3600
+    
+  # 国际化
+  i18n:
+    enabled: true
+    default_locale: "zh_CN"
+    supported_locales:
+      - "zh_CN"
+      - "en_US"
+    fallback_locale: "en_US"

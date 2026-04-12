@@ -1,0 +1,87 @@
+# 训练配置文件
+# 优先级：此文件 > backend/config/config.py > 环境变量
+
+training:
+  # 基础配置
+  max_concurrent_tasks: 4
+  default_batch_size: 32
+  default_learning_rate: 0.001
+  default_epochs: 100
+  
+  # 模型配置
+  models:
+    base_path: "/data/models"
+    cache_path: "/data/model_cache"
+    max_cache_size_gb: 50
+    
+    # 支持的模型类型
+    supported_types:
+      - "llama"
+      - "bert"
+      - "gpt"
+      - "t5"
+  
+  # 数据集配置
+  datasets:
+    base_path: "/data/datasets"
+    cache_path: "/data/dataset_cache"
+    max_cache_size_gb: 100
+    
+    # 数据预处理
+    preprocessing:
+      max_sequence_length: 512
+      tokenizer_cache: true
+      parallel_workers: 4
+  
+  # 三阶段训练配置
+  three_stage:
+    # 预训练阶段
+    pretrain:
+      default_epochs: 50
+      batch_size: 16
+      learning_rate: 0.0001
+      warmup_steps: 1000
+      
+    # 微调阶段
+    finetune:
+      default_epochs: 20
+      batch_size: 8
+      learning_rate: 0.00005
+      warmup_steps: 500
+      
+    # 偏好优化阶段
+    preference:
+      default_epochs: 10
+      batch_size: 4
+      learning_rate: 0.00001
+      warmup_steps: 200
+  
+  # 检查点配置
+  checkpoints:
+    enabled: true
+    save_interval: 1000  # 每1000步保存一次
+    max_keep: 5          # 最多保存5个检查点
+    base_path: "/data/checkpoints"
+    
+  # 分布式训练配置
+  distributed:
+    enabled: false
+    backend: "nccl"  # nccl, gloo, mpi
+    init_method: "env://"
+    world_size: 1
+    rank: 0
+    
+  # GPU配置
+  gpu:
+    auto_select: true
+    memory_fraction: 0.9
+    allow_growth: true
+    mixed_precision: true
+    
+  # 监控配置
+  monitoring:
+    log_interval: 100    # 每100步记录一次
+    eval_interval: 1000  # 每1000步评估一次
+    save_logs: true
+    tensorboard_enabled: true
+    wandb_enabled: false

@@ -1,0 +1,107 @@
+# 监控配置文件
+# 优先级：此文件 > backend/config/config.py > 环境变量
+
+monitoring:
+  # 基础配置
+  enabled: true
+  collection_interval: 30  # 秒
+  retention_hours: 168     # 7天
+  
+  # 指标收集配置
+  metrics:
+    # 系统指标
+    system:
+      enabled: true
+      cpu_usage: true
+      memory_usage: true
+      disk_usage: true
+      network_io: true
+      
+    # GPU指标
+    gpu:
+      enabled: true
+      utilization: true
+      memory_usage: true
+      temperature: true
+      power_usage: true
+      
+    # 应用指标
+    application:
+      enabled: true
+      request_count: true
+      response_time: true
+      error_rate: true
+      active_connections: true
+      
+    # 训练指标
+    training:
+      enabled: true
+      task_count: true
+      progress_tracking: true
+      resource_usage: true
+      model_metrics: true
+  
+  # 告警配置
+  alerts:
+    enabled: true
+    
+    # 系统告警阈值
+    thresholds:
+      cpu_usage: 85        # CPU使用率超过85%
+      memory_usage: 90     # 内存使用率超过90%
+      disk_usage: 85       # 磁盘使用率超过85%
+      gpu_temperature: 85  # GPU温度超过85°C
+      error_rate: 5        # 错误率超过5%
+      
+    # 告警通知
+    notifications:
+      email:
+        enabled: false
+        smtp_server: "smtp.example.com"
+        smtp_port: 587
+        username: ""
+        password: ""
+        recipients:
+          - "admin@example.com"
+          
+      webhook:
+        enabled: false
+        url: "https://hooks.slack.com/services/..."
+        
+      log:
+        enabled: true
+        level: "WARNING"
+  
+  # 外部监控系统集成
+  integrations:
+    # Prometheus
+    prometheus:
+      enabled: false
+      port: 9090
+      metrics_path: "/metrics"
+      
+    # Grafana
+    grafana:
+      enabled: false
+      dashboard_url: "http://localhost:3000"
+      
+    # ELK Stack
+    elasticsearch:
+      enabled: false
+      host: "localhost"
+      port: 9200
+      index_prefix: "vectorsphere"
+      
+  # 健康检查
+  health_check:
+    enabled: true
+    interval: 60  # 秒
+    timeout: 10   # 秒
+    
+    # 检查项目
+    checks:
+      database: true
+      redis: true
+      gpu_availability: true
+      disk_space: true
+      memory_available: true

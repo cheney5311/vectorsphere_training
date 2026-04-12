@@ -1,0 +1,204 @@
+# 性能API配置文件
+# Performance API Configuration
+
+# 资源状态阈值配置
+resource_thresholds:
+  # CPU阈值
+  cpu:
+    warning: 80
+    critical: 90
+  
+  # 内存阈值
+  memory:
+    warning: 75
+    critical: 85
+  
+  # 磁盘阈值
+  disk:
+    warning: 80
+    critical: 90
+  
+  # GPU利用率阈值
+  gpu_utilization:
+    warning: 80
+    critical: 95
+  
+  # GPU温度阈值（摄氏度）
+  gpu_temperature:
+    good: 60
+    normal: 75
+    warning: 85
+    critical: 85
+
+# 异步处理器配置
+async_processor:
+  # 队列配置
+  queue:
+    warning_utilization: 90  # 队列使用率警告阈值
+    max_size: 1000
+  
+  # 工作线程配置
+  workers:
+    max_count: 10
+    health_threshold: 0.5  # 健康工作线程比例阈值
+  
+  # 任务配置
+  tasks:
+    failure_rate_warning: 10  # 失败率警告阈值（百分比）
+    default_timeout: 300  # 默认任务超时（秒）
+
+# 数据库连接池配置
+database_pool:
+  # 使用率阈值
+  utilization:
+    warning: 70
+    critical: 90
+  
+  # 溢出阈值
+  overflow:
+    warning_ratio: 0.5  # 溢出/池大小比例警告阈值
+  
+  # 延迟阈值（毫秒）
+  latency:
+    excellent: 50
+    good: 100
+    moderate: 500
+
+# 健康检查配置
+health_check:
+  # 超时配置（秒）
+  timeout:
+    default: 5
+    database: 5
+    connection: 10
+  
+  # 数据新鲜度
+  data_freshness:
+    stale_threshold: 60  # 数据过期阈值（秒）
+  
+  # 查询延迟测试
+  latency_test:
+    sample_count: 3  # 测试查询次数
+
+# API分页配置
+pagination:
+  default_limit: 100
+  max_limit: 1000
+  default_offset: 0
+
+# 时间范围映射（秒）
+time_ranges:
+  "5m": 300
+  "15m": 900
+  "30m": 1800
+  "1h": 3600
+  "6h": 21600
+  "24h": 86400
+  default: "1h"
+
+# 告警配置
+alerts:
+  # 历史查询默认时间范围（分钟）
+  default_duration_minutes: 60
+  
+  # 返回限制
+  max_recent_alerts: 10
+  max_alerts_per_page: 100
+
+# 清理配置
+cleanup:
+  # 关闭超时（秒）
+  shutdown_timeout: 10
+  
+  # 任务清理
+  tasks:
+    default_max_age_days: 30
+
+# 默认告警规则配置
+default_alert_rules:
+  # CPU告警
+  - name: "high_cpu_usage"
+    metric_type: "system.cpu_percent"
+    threshold: 90.0
+    operator: ">="
+    duration_seconds: 60
+    level: "critical"
+    description: "CPU usage exceeds 90% for 1 minute"
+  
+  - name: "elevated_cpu_usage"
+    metric_type: "system.cpu_percent"
+    threshold: 75.0
+    operator: ">="
+    duration_seconds: 120
+    level: "warning"
+    description: "CPU usage exceeds 75% for 2 minutes"
+  
+  # 内存告警
+  - name: "high_memory_usage"
+    metric_type: "system.memory_percent"
+    threshold: 90.0
+    operator: ">="
+    duration_seconds: 60
+    level: "critical"
+    description: "Memory usage exceeds 90% for 1 minute"
+  
+  - name: "elevated_memory_usage"
+    metric_type: "system.memory_percent"
+    threshold: 80.0
+    operator: ">="
+    duration_seconds: 120
+    level: "warning"
+    description: "Memory usage exceeds 80% for 2 minutes"
+  
+  # 磁盘告警
+  - name: "high_disk_usage"
+    metric_type: "system.disk_percent"
+    threshold: 90.0
+    operator: ">="
+    duration_seconds: 0
+    level: "critical"
+    description: "Disk usage exceeds 90%"
+  
+  # GPU告警
+  - name: "high_gpu_temperature"
+    metric_type: "gpu.temperature"
+    threshold: 85.0
+    operator: ">="
+    duration_seconds: 30
+    level: "critical"
+    description: "GPU temperature exceeds 85°C"
+  
+  - name: "high_gpu_memory_usage"
+    metric_type: "gpu.memory_percent"
+    threshold: 95.0
+    operator: ">="
+    duration_seconds: 60
+    level: "warning"
+    description: "GPU memory usage exceeds 95%"
+  
+  # 任务队列告警
+  - name: "task_queue_backlog"
+    metric_type: "async.queue_utilization"
+    threshold: 90.0
+    operator: ">="
+    duration_seconds: 120
+    level: "warning"
+    description: "Task queue utilization exceeds 90% for 2 minutes"
+  
+  # 数据库连接池告警
+  - name: "db_pool_exhaustion"
+    metric_type: "database.pool_utilization"
+    threshold: 95.0
+    operator: ">="
+    duration_seconds: 30
+    level: "critical"
+    description: "Database pool nearly exhausted"
+
+# 初始化配置
+initialization:
+  auto_start_monitoring: true
+  setup_default_alerts: true
+  init_async_processor: true
+  init_database_pool: true
+  register_cleanup: true
+

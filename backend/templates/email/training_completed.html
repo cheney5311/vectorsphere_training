@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>训练完成通知</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 28px;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .stats {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .stats div {
+            margin: 5px 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">VectorSphere</div>
+            <h1 class="title">训练已完成！</h1>
+        </div>
+        
+        <div class="content">
+            <p>亲爱的 {{ username }}，</p>
+            
+            <p>您的模型训练任务已完成！</p>
+            
+            <div class="stats">
+                <div><strong>任务ID：</strong>{{ job_id }}</div>
+                <div><strong>模型名称：</strong>{{ model_name }}</div>
+                <div><strong>训练时长：</strong>{{ duration }}</div>
+                <div><strong>最终损失：</strong>{{ final_loss }}</div>
+                <div><strong>完成时间：</strong>{{ completed_at }}</div>
+            </div>
+            
+            <p>训练结果已保存到您的账户中，您可以立即部署或继续优化您的模型。</p>
+            
+            <div style="text-align: center;">
+                <a href="{{ dashboard_url }}" class="button">查看训练结果</a>
+            </div>
+            
+            <p>如果您对训练结果有任何疑问，请联系我们的支持团队：{{ support_email }}</p>
+            
+            <p>感谢您使用VectorSphere！</p>
+            
+            <p>祝好，<br>VectorSphere团队</p>
+        </div>
+        
+        <div class="footer">
+            <p>此邮件为系统自动发送，请勿回复。</p>
+            <p>&copy; 2025 VectorSphere. 保留所有权利。</p>
+        </div>
+    </div>
+</body>
+</html>

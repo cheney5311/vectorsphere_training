@@ -1,0 +1,46 @@
+# Redis配置文件
+# 优先级：此文件 > backend/config/config.py > 环境变量
+
+redis:
+  # 基本连接配置
+  host: "localhost"
+  port: 6379
+  password: ""
+  db: 0
+  
+  # 连接池配置
+  max_connections: 50
+  retry_on_timeout: true
+  socket_timeout: 5
+  socket_connect_timeout: 5
+  
+  # 集群配置（可选）
+  cluster:
+    enabled: false
+    nodes:
+      - host: "localhost"
+        port: 7000
+      - host: "localhost"
+        port: 7001
+      - host: "localhost"
+        port: 7002
+  
+  # 缓存配置
+  cache:
+    default_ttl: 3600  # 默认过期时间（秒）
+    key_prefix: "vectorsphere:"
+    
+    # 不同类型数据的TTL配置
+    ttl_config:
+      user_session: 86400      # 24小时
+      api_cache: 1800          # 30分钟
+      model_cache: 7200        # 2小时
+      training_status: 300     # 5分钟
+  
+  # 发布订阅配置
+  pubsub:
+    enabled: true
+    channels:
+      - "training_events"
+      - "system_notifications"
+      - "cluster_updates"

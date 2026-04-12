@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vector-sphere-resource-release-worker
+  labels:
+    app: vector-sphere-resource-release-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vector-sphere-resource-release-worker
+  template:
+    metadata:
+      labels:
+        app: vector-sphere-resource-release-worker
+    spec:
+      containers:
+        - name: release-worker
+          image: your-registry/vector-sphere-backend:latest
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/local/bin/python", "-u", "backend/utils/resource_release_queue.py"]
+          env:
+            - name: RESOURCE_RELEASE_QUEUE_DIR
+              value: "/tmp/resource_release_queue"
+          volumeMounts:
+            - name: tmp-queue
+              mountPath: /tmp/resource_release_queue
+      volumes:
+        - name: tmp-queue
+          emptyDir: {}
+      restartPolicy: Always

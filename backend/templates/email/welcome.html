@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎加入VectorSphere</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 28px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">VectorSphere</div>
+            <h1 class="title">欢迎加入我们！</h1>
+        </div>
+        
+        <div class="content">
+            <p>亲爱的 {{ username }}，</p>
+            
+            <p>欢迎注册VectorSphere智能训练平台！我们很高兴您能加入我们的社区。</p>
+            
+            <p>VectorSphere是一个先进的AI模型训练和部署平台，为您提供：</p>
+            
+            <ul>
+                <li>🚀 高性能模型训练</li>
+                <li>🧠 智能体开发和管理</li>
+                <li>📊 实时监控和分析</li>
+                <li>🔒 安全可靠的环境</li>
+            </ul>
+            
+            <p>立即开始您的AI之旅：</p>
+            
+            <div style="text-align: center;">
+                <a href="{{ login_url }}" class="button">登录平台</a>
+            </div>
+            
+            <p>如果您有任何问题，请随时联系我们的支持团队：{{ support_email }}</p>
+            
+            <p>再次欢迎您的加入！</p>
+            
+            <p>祝好，<br>VectorSphere团队</p>
+        </div>
+        
+        <div class="footer">
+            <p>此邮件为系统自动发送，请勿回复。</p>
+            <p>&copy; 2025 VectorSphere. 保留所有权利。</p>
+        </div>
+    </div>
+</body>
+</html>

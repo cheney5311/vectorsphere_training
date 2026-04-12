@@ -1,0 +1,59 @@
+# 数据库配置文件
+# 优先级：此文件 > backend/config/config.py > 环境变量
+# 
+# 提示：开发环境默认使用 SQLite，生产环境请修改为 PostgreSQL
+# 
+# PostgreSQL 配置示例:
+#   type: "postgresql"
+#   host: "localhost"
+#   port: 5432
+#   name: "vectorsphere"
+#   username: "postgres"
+#   password: "your_password"
+#
+# 或设置环境变量:
+#   export DB_TYPE=postgresql
+#   export DB_HOST=localhost
+#   export DB_PORT=5432
+#   export DB_NAME=vectorsphere
+#   export DB_USER=postgres
+#   export DB_PASSWORD=your_password
+
+database:
+  # 数据库类型 (postgresql, mysql, sqlite)
+  # 开发环境默认使用 SQLite，无需配置密码
+  #type: "sqlite"
+  
+  # SQLite 配置（开发环境）
+  #name: "vectorsphere.db"
+  
+  # PostgreSQL 配置（生产环境）
+  # 取消注释并修改以下配置以使用 PostgreSQL
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  name: "postgres"
+  username: "postgres"
+  password: "123456aa"
+  
+  # 连接池配置
+  pool_size: 10
+  max_overflow: 20
+  pool_timeout: 30
+  pool_recycle: 3600
+  
+  # 调试模式
+  echo: false
+  
+  # SSL配置 (仅PostgreSQL)
+  ssl_mode: "prefer"
+  ssl_cert: ""
+  ssl_key: ""
+  ssl_ca: ""
+  
+  # 备份配置
+  backup:
+    enabled: true
+    schedule: "0 2 * * *"  # 每天凌晨2点
+    retention_days: 30
+    storage_path: "/data/backups/database"
