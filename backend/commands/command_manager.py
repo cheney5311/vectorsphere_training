@@ -104,16 +104,14 @@ class CommandManager:
     def _get_epilog(self) -> str:
         """获取帮助信息的结尾部分"""
         return """
-📝 使用示例:
+使用示例:
   python app.py serve --host 0.0.0.0 --port 8080
   python app.py train --model llama2 --training-mode three-stage --sft-enabled
   python app.py test --category services --verbose
   python app.py info --check-health
 
-💡 获取命令帮助:
+获取命令帮助:
   python app.py <command> --help
-  
-📚 文档: https://vectorsphere.io/docs
 """
     
     def parse_args(self, args: Optional[List[str]] = None) -> argparse.Namespace:
