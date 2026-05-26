@@ -103,7 +103,7 @@ class DatabaseManager:
             for table in tables_to_create:
                 try:
                     table.create(bind=self.engine, checkfirst=True)
-                    logger.info(f"✅ 成功创建表: {table.name}")
+                    logger.info(f"成功创建表: {table.name}")
                 except Exception as e:
                     logger.error(f"创建表 {table.name} 失败: {e}")
                     raise
@@ -134,9 +134,9 @@ class DatabaseManager:
                 try:
                     self._add_column_safely(table_name, column)
                     columns_added += 1
-                    logger.info(f"✅ 成功添加列: {table_name}.{column.name}")
+                    logger.info(f"成功添加列: {table_name}.{column.name}")
                 except Exception as e:
-                    logger.warning(f"⚠️ 添加列 {table_name}.{column.name} 失败: {e}")
+                    logger.warning(f"添加列 {table_name}.{column.name} 失败: {e}")
         
         # 检查并添加缺失的索引
         indexes_added = 0
@@ -145,9 +145,9 @@ class DatabaseManager:
                 try:
                     self._create_index_safely(index)
                     indexes_added += 1
-                    logger.info(f"✅ 成功创建索引: {index.name}")
+                    logger.info(f"成功创建索引: {index.name}")
                 except Exception as e:
-                    logger.warning(f"⚠️ 创建索引 {index.name} 失败: {e}")
+                    logger.warning(f"创建索引 {index.name} 失败: {e}")
         
         # 处理列级索引（通过 index=True 创建的索引）
         for column in table.columns:
@@ -158,14 +158,14 @@ class DatabaseManager:
                     try:
                         self._create_column_index_safely(table_name, column)
                         indexes_added += 1
-                        logger.info(f"✅ 成功创建列索引: {expected_index_name}")
+                        logger.info(f"成功创建列索引: {expected_index_name}")
                     except Exception as e:
-                        logger.warning(f"⚠️ 创建列索引 {expected_index_name} 失败: {e}")
+                        logger.warning(f"创建列索引 {expected_index_name} 失败: {e}")
         
         if columns_added > 0 or indexes_added > 0:
-            logger.info(f"✅ 表 {table_name} 更新完成: 添加了 {columns_added} 列, {indexes_added} 索引")
+            logger.info(f"表 {table_name} 更新完成: 添加了 {columns_added} 列, {indexes_added} 索引")
         else:
-            logger.info(f"✅ 表 {table_name} 无需更新")
+            logger.info(f"表 {table_name} 无需更新")
     
     def _add_column_safely(self, table_name: str, column: Column):
         """安全地添加列"""
@@ -198,15 +198,15 @@ class DatabaseManager:
                 create_index_sql = CreateIndex(index).compile(dialect=self.engine.dialect)
                 conn.execute(text(str(create_index_sql)))
                 conn.commit()
-                logger.info(f"✅ 成功创建索引 {index.name}")
+                logger.info(f"成功创建索引 {index.name}")
         except ProgrammingError as e:
             if "already exists" in str(e).lower():
                 logger.info(f"索引 {index.name} 已存在，跳过创建")
             else:
-                logger.error(f"⚠️ 创建索引 {index.name} 失败: {str(e)}")
+                logger.error(f"创建索引 {index.name} 失败: {str(e)}")
                 raise
         except Exception as e:
-            logger.error(f"⚠️ 创建索引 {index.name} 失败: {str(e)}")
+            logger.error(f"创建索引 {index.name} 失败: {str(e)}")
             # 不抛出异常，允许应用继续运行
             pass
     
